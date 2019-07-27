@@ -1,11 +1,11 @@
-
+import pygame
 import gc
 
 def mapRange(val, istart, istop, ostart, ostop):
     return ostart + (ostop - ostart) * ((val - istart) / (istop - istart))
 
 def rect(surface, color, rect, width=0):
-    xposition = srect[0]
+    xposition = rect[0]
     yposition = rect[1]
     widthrect = rect[2]
     heightrect = rect[3]
@@ -81,7 +81,7 @@ class Slider():
         self.position = position
         self.maximum = maximum
         self.minimum = minimum
-        self.surface
+        self.surface = surface
         self._value = value
         self.width = width
         self.height = height
