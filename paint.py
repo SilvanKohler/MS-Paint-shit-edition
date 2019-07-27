@@ -9,8 +9,7 @@ picker = True
 
 def loadSettings():
     with open('settings.json') as settingsfile:
-        settings = json.loads(settingsfile)
-    print(settings)
+        return json.load(settingsfile)
 
 
 class colorpicker(threading.Thread):
@@ -28,14 +27,12 @@ class main(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         pygame.init()
-        loadSettings()
+        settings = loadSettings()
         self.mousePos = np.array([0, 0])
-        self.width = 600
-        self.height = 400
+        self.width = settings['WindowSize']['width']
+        self.height = settings['WindowSize']['height']
         self.paintResolution = np.array([60, 40])
         self.screen = pygame.display.set_mode((self.width, self.height))
-
-        print(pygame.QUIT)
     def run(self):
         while True:
             if not picker and pick:
@@ -48,7 +45,6 @@ class main(threading.Thread):
                     self.mousePos = np.array(event.pos)
                     print(self.mousePos)
             self.screen.fill((255, 255, 255))
-            b.show()
             for x in np.arange(self.paintResolution[0]):
                 pygame.draw.line(self.screen, (0, 0, 0), (self.width / self.paintResolution[0] * x, 0), (self.width / self.paintResolution[0] * x, self.height), 1)
             
