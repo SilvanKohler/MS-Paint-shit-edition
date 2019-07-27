@@ -81,7 +81,7 @@ def main():
     
     colorfield.resize((width, height, 3))
 
-    s = Slider.Slider(0, 360)
+    s = Slider.Slider(0, 360, screen)
 
     
     while True:
