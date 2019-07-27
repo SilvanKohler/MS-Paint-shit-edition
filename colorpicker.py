@@ -1,7 +1,7 @@
 import pygame
+import numpy as np
 
 def rgb2hsv(r,g,b):
-    
     cmax = max(r, g, b) / 255
     cmin = min(r, g, b) / 255
     delta = cmax - cmin
@@ -18,12 +18,12 @@ def rgb2hsv(r,g,b):
     elif cmax != 0.0:
         s = delta / cmax * 100
     v = cmax * 100
-    return (h,s,v)
+    return (h, s, v)
 
 def hsv2rgb(h,s,v):
-    h = hSlider.value
-    s = sSlider.value / 100
-    v = vSlider.value / 100
+    h = h / 1
+    s = s / 100
+    v = v / 100
     h60 = h / 60
     h60f = int(h60)
     hi = int(h60f) % 6
@@ -31,7 +31,6 @@ def hsv2rgb(h,s,v):
     p = v * (1 - s)
     q = v * (1 - f * s)
     t = v * (1 - (1 - f) * s)
-    r, g, b = 0, 0, 0
     if hi == 0:
         r, g, b = v, t, p
     elif hi == 1:
@@ -44,17 +43,43 @@ def hsv2rgb(h,s,v):
         r, g, b = t, p, v
     elif hi == 5:
         r, g, b = v, p, q
-    r, g, b, = rSlider.value, gSlider.value, bSlider.value = r * 255, g * 255, b * 255
-
-
+    r, g, b = r * 255, g * 255, b * 255
+    return (int(round(r)), int(round(g)), int(round(b)))
 
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode(120,100)
+    width = 300
+    height = 250
+    sliderWidth = width - height
+    screen = pygame.display.set_mode((width,height))
+    colorfield = np.zeros((width, width, 3), dtype=np.int)
+    h = 0
+    a = np.arange(height)
+    for x in a:
+        for y in a:
+            rgb = hsv2rgb(h,x/height*100,(height-y)/height*100)
+            for i in [0,1,2]:
+                colorfield[x,y,i] = rgb[i]
+    hueLine = np.zeros((height, sliderWidth, 3), dtype=np.int)
+    s = np.arange(sliderWidth)
+    for y in a:
+        rgb = hsv2rgb(y,50,50)
+        for x in s:
+            for i in [0,1,2]:
+                hueLine[y,x,i] = rgb[i]
+    colorfield = np.append(colorfield, hueLine, axis=1)
+    colorfield.resize((width, height, 3))
+
+
     
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+        pygame.surfarray.blit_array(screen, colorfield)
+        pygame.display.flip()
+
+if __name__ == "__main__":
+    main()
