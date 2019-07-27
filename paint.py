@@ -1,37 +1,64 @@
 import pygame
 import numpy as np
+import subprocess
+import threading
+from time import sleep
+import json
+
+picker = True
+
+def loadSettings():
+    with open('settings.json') as settingsfile:
+        settings = json.loads(settingsfile)
+    print(settings)
 
 
+class colorpicker(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.process = None
+    def run(self):
+        self.process = subprocess.Popen(['py', 'colorpicker.py'])
+def openpicker():
+    pick = colorpicker()
+    pick.start()
 
+            
+class main(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        pygame.init()
+        loadSettings()
+        self.mousePos = np.array([0, 0])
+        self.width = 600
+        self.height = 400
+        self.paintResolution = np.array([60, 40])
+        self.screen = pygame.display.set_mode((self.width, self.height))
 
-def main():
-    pygame.init()
-    mousePos = np.array([0, 0])
-    width = 600
-    height = 400
-    paintResolution = np.array([60, 40])
-    screen = pygame.display.set_mode((width, height))
-    print(pygame.QUIT)
-    
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return
-            elif event.type == pygame.MOUSEMOTION:
-                mousePos = np.array(event.pos)
-                print(mousePos)
-        screen.fill((255, 255, 255))
-        b.show()
-        for x in np.arange(paintResolution[0]):
-            pygame.draw.line(screen, (0, 0, 0), (width / paintResolution[0] * x, 0), (width / paintResolution[0] * x, height), 1)
-        
-        for y in np.arange(paintResolution[1]):
-            pygame.draw.line(screen, (0, 0, 0), (0, height / paintResolution[1] * y), (width, height / paintResolution[1] * y), 1)
+        print(pygame.QUIT)
+    def run(self):
+        while True:
+            if not picker and pick:
+                pick.process.kill()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                elif event.type == pygame.MOUSEMOTION:
+                    self.mousePos = np.array(event.pos)
+                    print(self.mousePos)
+            self.screen.fill((255, 255, 255))
+            b.show()
+            for x in np.arange(self.paintResolution[0]):
+                pygame.draw.line(self.screen, (0, 0, 0), (self.width / self.paintResolution[0] * x, 0), (self.width / self.paintResolution[0] * x, self.height), 1)
+            
+            for y in np.arange(self.paintResolution[1]):
+                pygame.draw.line(self.screen, (0, 0, 0), (0, self.height / self.paintResolution[1] * y), (self.width, self.height / self.paintResolution[1] * y), 1)
 
-        pygame.draw.rect(screen, (255, 0, 50), (int(mousePos[0] / (width / paintResolution[0])) * width / paintResolution[0], int(mousePos[1] / (height / paintResolution[1])) * height / paintResolution[1], 10, 10))
-        
-        pygame.display.flip()
+            pygame.draw.rect(self.screen, (255, 0, 50), (int(self.mousePos[0] / (self.width / self.paintResolution[0])) * self.width / self.paintResolution[0], int(self.mousePos[1] / (self.height / self.paintResolution[1])) * self.height / self.paintResolution[1], 10, 10))
+            
+            pygame.display.flip()
 
 if __name__ == "__main__":
-    main()
+    mainprocess = main()
+    mainprocess.start()
