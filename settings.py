@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 import json
 
 def loadSettings():
@@ -13,17 +13,16 @@ scrollbar1 = Scrollbar(window)
 einstellungen = Listbox(window, yscrollcommand=scrollbar1.set)
 einstellung = Entry(window)
 def select(evt):
-        global selected
-        row = einstellungen.curselection()
-        if not row == ():
-                print(row[0])
-                selected = [settings[row[0]], row[0]]
-                description.delete(1.0, END)
-                description.insert(END, descriptions[row[0]])
-
+    global selected
+    row = einstellungen.curselection()
+    if not row == ():
+        print(row[0])
+        selected = [settings[row[0]], row[0]]
+        einstellung.delete(0, END)
+        einstellung.insert(0, settings[list(settings.keys())[row[0]]])
 einstellungen.bind('<<ListboxSelect>>', select)
 scrollbar1.config(command=einstellungen.yview)
-def instert():
+def insert():
     row = 0
     for key, value in settings.iteritems():
         einstellungen.insert(row, key)
