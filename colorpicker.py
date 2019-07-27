@@ -21,7 +21,7 @@ def rgb2hsv(r,g,b):
     return (h,s,v)
 
 def hsv2rgb(h,s,v):
-h = hSlider.value
+    h = hSlider.value
     s = sSlider.value / 100
     v = vSlider.value / 100
     h60 = h / 60
