@@ -1,7 +1,13 @@
 {
-    "colorpickerWindowSize": 300
-
-
-
-
+    "edition": "shit",
+    "WindowSize":
+        {
+        "width": 600,
+        "height": 400
+        },
+    "colorpickerWindowSize": 
+        {
+            "width": 300,
+            "height": 250
+        }
 }
