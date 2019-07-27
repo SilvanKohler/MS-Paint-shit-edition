@@ -1,6 +1,12 @@
 import pygame
 import numpy as np
+import json
+import Slider
 
+def loadSettings():
+    with open('settings.json') as settingsfile:
+        return json.load(settingsfile)
+        
 def rgb2hsv(r,g,b):
     cmax = max(r, g, b) / 255
     cmin = min(r, g, b) / 255
@@ -49,35 +55,53 @@ def hsv2rgb(h,s,v):
 
 def main():
     pygame.init()
-    width = 300
-    height = 250
+    settings = loadSettings()
+    width = settings['WindowSize']['width']
+    height = settings['WindowSize']['height']
     sliderWidth = width - height
     screen = pygame.display.set_mode((width,height))
-    colorfield = np.zeros((width, width, 3), dtype=np.int)
+    colorfield = np.zeros((width, height, 3), dtype=np.int)
+    mousePos = np.array([0,0], dtype=np.int)
+    mouseDown = False
+
     h = 0
     a = np.arange(height)
-    for x in a:
-        for y in a:
-            rgb = hsv2rgb(h,x/height*100,(height-y)/height*100)
+    for y in a:
+        for x in a:
+            rgb = hsv2rgb(h,y/height*100,(height-x)/height*100)
             for i in [0,1,2]:
-                colorfield[x,y,i] = rgb[i]
-    hueLine = np.zeros((height, sliderWidth, 3), dtype=np.int)
+                colorfield[y,x,i] = rgb[i]
+                
     s = np.arange(sliderWidth)
     for y in a:
-        rgb = hsv2rgb(y,50,50)
-        for x in s:
+        rgb = hsv2rgb(y, 100, 100)
+        for x in s + height:
             for i in [0,1,2]:
-                hueLine[y,x,i] = rgb[i]
-    colorfield = np.append(colorfield, hueLine, axis=1)
+                colorfield[x,y,i] = rgb[i]
+    
     colorfield.resize((width, height, 3))
 
+    s = Slider.Slider(0, 360)
 
     
     while True:
+        mouseClick = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+            elif event.type == pygame.MOUSEMOTION:
+                mousePos = event.pos
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 0:
+                    mouseDown = True
+                    mouseClick = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 0:
+                    mouseDown = False
+        Slider.Slider.update(mousePos, mouseDown, mouseClick)
+        Slider.Slider.showAll()
+        
         pygame.surfarray.blit_array(screen, colorfield)
         pygame.display.flip()
 
