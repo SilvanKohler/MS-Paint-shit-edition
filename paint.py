@@ -5,13 +5,16 @@ import threading
 from time import sleep
 import json
 
-picker = True
+
+picker = False
 
 def loadSettings():
     with open('settings.json') as settingsfile:
         return json.load(settingsfile)
-
-
+settings = loadSettings()
+_edition = settings['insider']['edition']
+_width = settings['WindowSize']['width']
+_height = settings['WindowSize']['height']
 class colorpicker(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -27,12 +30,12 @@ class main(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         pygame.init()
-        settings = loadSettings()
         self.mousePos = np.array([0, 0])
-        self.width = settings['WindowSize']['width']
-        self.height = settings['WindowSize']['height']
+        self.width = _width
+        self.height = _height
         self.paintResolution = np.array([60, 40])
         self.screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption(f'MS Paint {_edition} edition')
     def run(self):
         while True:
             if not picker and pick:
