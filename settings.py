@@ -6,12 +6,12 @@ def loadSettings():
         return json.load(settingsfile)
 settings = loadSettings()
 _edition = settings['insider']['edition']
-_width = settings['WindowSize']['width']
-_height = settings['WindowSize']['height']
+_width = settings['settingsWindowSize']['width']
+_height = settings['settingsWindowSize']['height']
 selection = None
 selected = None
 window = Tk()
-window.title(f'MS Paint {_edition} edition')
+window.title(f'settings - MS Paint {_edition} edition')
 window.geometry(f'{_width}x{_height}')
 scrollbar1 = Scrollbar(window)
 tree1 = Listbox(window, yscrollcommand=scrollbar1.set)
@@ -19,8 +19,20 @@ scrollbar2 = Scrollbar(window)
 tree2 = Listbox(window, yscrollcommand=scrollbar2.set)
 einstellung = Entry(window)
 def finish():
+    global settings
     if selection:
-        settings[selection] = einstellung.get()
+        if type(settings[selection[0]][selection[1]]) == str:
+            settings[selection[0]][selection[1]] = einstellung.get()
+        elif type(settings[selection[0]][selection[1]]) == int:
+            settings[selection[0]][selection[1]] = int(einstellung.get())
+        elif type(settings[selection[0]][selection[1]]) == bool:
+            settings[selection[0]][selection[1]] = bool(einstellung.get())
+        elif type(settings[selection[0]][selection[1]]) == float:
+            settings[selection[0]][selection[1]] = float(einstellung.get())
+        settings = str(settings).replace("'", '"')
+        with open('settings.json', 'w') as settingsfile:
+            settingsfile.write(str(settings))
+        settings = loadSettings()
 ok = Button(window, text="OK", command=finish)
 tree1.pack(side=LEFT, fill=BOTH)
 scrollbar1.pack(side=LEFT, fill=Y)
@@ -51,7 +63,7 @@ def select2(evt):
     global selection
     row = tree2.curselection()
     if not row == () and selected:
-        selection = list(settings.keys())[selected[1]]][list(settings[selected[0]].keys())[row[0]]]
+        selection = [list(settings.keys())[selected[1]], list(settings[selected[0]].keys())[row[0]]]
         einstellung.delete(0, END)
         einstellung.insert(0, settings[list(settings.keys())[selected[1]]][list(settings[selected[0]].keys())[row[0]]])
 tree1.bind('<<ListboxSelect>>', select1)
