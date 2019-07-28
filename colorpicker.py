@@ -3,11 +3,13 @@ import numpy as np
 import json
 import Slider
 
+
 def loadSettings():
     with open('settings.json') as settingsfile:
         return json.load(settingsfile)
-        
-def rgb2hsv(r,g,b):
+
+
+def rgb2hsv(r, g, b):
     cmax = max(r, g, b) / 255
     cmin = min(r, g, b) / 255
     delta = cmax - cmin
@@ -26,7 +28,8 @@ def rgb2hsv(r,g,b):
     v = cmax * 100
     return (h, s, v)
 
-def hsv2rgb(h,s,v):
+
+def hsv2rgb(h, s, v):
     h = h / 1
     s = s / 100
     v = v / 100
@@ -59,31 +62,30 @@ def main():
     width = settings['WindowSize']['width']
     height = settings['WindowSize']['height']
     sliderWidth = width - height
-    screen = pygame.display.set_mode((width,height))
+    screen = pygame.display.set_mode((width, height))
     colorfield = np.zeros((width, height, 3), dtype=np.int)
-    mousePos = np.array([0,0], dtype=np.int)
+    mousePos = np.array([0, 0], dtype=np.int)
     mouseDown = False
 
     h = 0
     a = np.arange(height)
     for y in a:
         for x in a:
-            rgb = hsv2rgb(h,y/height*100,(height-x)/height*100)
-            for i in [0,1,2]:
-                colorfield[y,x,i] = rgb[i]
-                
+            rgb = hsv2rgb(h, y/height*100, (height-x)/height*100)
+            for i in [0, 1, 2]:
+                colorfield[y, x, i] = rgb[i]
+
     s = np.arange(sliderWidth)
     for y in a:
         rgb = hsv2rgb(y, 100, 100)
         for x in s + height:
-            for i in [0,1,2]:
-                colorfield[x,y,i] = rgb[i]
-    
+            for i in [0, 1, 2]:
+                colorfield[x, y, i] = rgb[i]
+
     colorfield.resize((width, height, 3))
 
     s = Slider.Slider(0, 360, screen)
 
-    
     while True:
         mouseClick = False
         for event in pygame.event.get():
@@ -101,9 +103,10 @@ def main():
                     mouseDown = False
         Slider.Slider.update(mousePos, mouseDown, mouseClick)
         Slider.Slider.showAll()
-        
+
         pygame.surfarray.blit_array(screen, colorfield)
         pygame.display.flip()
+
 
 if __name__ == "__main__":
     main()
