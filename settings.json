@@ -1,1 +1,24 @@
-{"WindowSize": {"width": 600, "height": 400}, "colorpickerWindowSize": {"width": 300, "height": 250}, "settingsWindowSize": {"width": 600, "height": 400}, "quickAccessBarWindowSize": {"width": "windowSize", "height": 100}, "dont change": {"no dont": "WHY!?!"}, "insider": {"edition": "shit"}}
+{
+    "WindowSize": {
+        "width": 600,
+        "height": 400
+    },
+    "colorpickerWindowSize": {
+        "width": 300,
+        "height": 250
+    },
+    "settingsWindowSize": {
+        "width": 600,
+        "height": 400
+    },
+    "quickAccessBarWindowSize": {
+        "width": "windowSize",
+        "height": 100
+    },
+    "dont change": {
+        "no dont": "WHY!?!"
+    },
+    "insider": {
+        "edition": "shit"
+    }
+}
