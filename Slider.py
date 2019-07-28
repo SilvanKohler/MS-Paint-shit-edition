@@ -1,22 +1,29 @@
 import pygame
 import gc
 
+
 def mapRange(val, istart, istop, ostart, ostop):
     return ostart + (ostop - ostart) * ((val - istart) / (istop - istart))
+
 
 def rect(surface, color, rect, width=0):
     xposition = rect[0]
     yposition = rect[1]
     widthrect = rect[2]
     heightrect = rect[3]
-    pygame.draw.line(surface, color, (xposition - int(width / 2.00000000001), yposition), (xposition + widthrect + width // 2, yposition), width)
-    pygame.draw.line(surface, color, (xposition + widthrect, yposition), (xposition + widthrect, yposition + heightrect + width // 2), width)
-    pygame.draw.line(surface, color, (xposition, yposition + heightrect), (xposition + widthrect + width // 2, yposition + heightrect), width)
-    pygame.draw.line(surface, color, (xposition, yposition), (xposition, yposition + heightrect + width // 2), width)
+    pygame.draw.line(surface, color, (xposition - int(width / 2.00000000001),
+                                      yposition), (xposition + widthrect + width // 2, yposition), width)
+    pygame.draw.line(surface, color, (xposition + widthrect, yposition),
+                     (xposition + widthrect, yposition + heightrect + width // 2), width)
+    pygame.draw.line(surface, color, (xposition, yposition + heightrect),
+                     (xposition + widthrect + width // 2, yposition + heightrect), width)
+    pygame.draw.line(surface, color, (xposition, yposition),
+                     (xposition, yposition + heightrect + width // 2), width)
+
 
 class Slider():
     global currentSlider
-    currentSlider = 0 # to set the cmyk-values correctly
+    currentSlider = 0  # to set the cmyk-values correctly
 
     @classmethod
     def update(cls, mousePos, mouseDown, mouseClick, right=False, left=False):
@@ -63,19 +70,19 @@ class Slider():
                 setattr(obj, attribute, val)
 
     def __init__(self,
-                minimum,
-                maximum,
-                surface,
-                value=None,
-                width=120,
-                height=30,
-                position=[0,0],
-                lineColor=(128,128,128),
-                rectColor=(128,128,128),
-                outlineColor=(0,0,0),
-                outlineThickness=2,
-                lineThickness=8,
-                sliderThickness=14):
+                 minimum,
+                 maximum,
+                 surface,
+                 value=None,
+                 width=120,
+                 height=30,
+                 position=[0, 0],
+                 lineColor=(128, 128, 128),
+                 rectColor=(128, 128, 128),
+                 outlineColor=(0, 0, 0),
+                 outlineThickness=2,
+                 lineThickness=8,
+                 sliderThickness=14):
         if value is None or value > width or value < 0:
             value = width / 2
         self.position = position
@@ -122,7 +129,8 @@ class Slider():
 
     @value.setter
     def value(self, value):
-        self._value = mapRange(value, self.minimum, self.maximum, 0, self.width)
+        self._value = mapRange(value, self.minimum,
+                               self.maximum, 0, self.width)
         if self._value > self.width:
             self._value = self.width
         elif self._value < 0:
@@ -130,11 +138,19 @@ class Slider():
 
     def show(self):
         if self.marked:
-            rect(self.surface, self.outlineColor, (self.position[0] - self.sliderThickness // 2 - 2, self.position[1] - 2, self.width + self.sliderThickness + 4, self.height + 4), self.outlineThickness)
-        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] - int((self.sliderThickness + self.outlineThickness) / 2.0000000001), self.position[1] + self.height / 2), (self.position[0] + (self.sliderThickness + self.outlineThickness) // 2 + self.width, self.position[1] + self.height / 2), self.lineThickness + self.outlineThickness)
-        pygame.draw.line(self.surface, self.lineColor, (self.position[0] - int((self.sliderThickness - self.outlineThickness) / 2.0000000001), self.position[1] + self.height / 2), (self.position[0] + (self.sliderThickness - self.outlineThickness) // 2 + self.width, self.position[1] + self.height / 2), self.lineThickness - self.outlineThickness)
-        pygame.draw.rect(self.surface, self.rectColor, (self.position[0] + self._value - self.sliderThickness // 2, self.position[1], self.sliderThickness, self.height))
-        rect(self.surface, self.outlineColor, (self.position[0] + self._value - self.sliderThickness // 2, self.position[1], self.sliderThickness, self.height), self.outlineThickness)
-        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] + self.height / 2), (self.position[0] + self._value + 4, self.position[1] + self.height / 2), 2)
-        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] + self.height / 2 + 4), (self.position[0] + self._value + 4, self.position[1] + self.height / 2 + 4), 2)
-        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] + self.height / 2 - 4), (self.position[0] + self._value + 4, self.position[1] + self.height / 2 - 4), 2)
+            rect(self.surface, self.outlineColor, (self.position[0] - self.sliderThickness // 2 - 2,
+                                                   self.position[1] - 2, self.width + self.sliderThickness + 4, self.height + 4), self.outlineThickness)
+        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] - int((self.sliderThickness + self.outlineThickness) / 2.0000000001), self.position[1] + self.height / 2), (
+            self.position[0] + (self.sliderThickness + self.outlineThickness) // 2 + self.width, self.position[1] + self.height / 2), self.lineThickness + self.outlineThickness)
+        pygame.draw.line(self.surface, self.lineColor, (self.position[0] - int((self.sliderThickness - self.outlineThickness) / 2.0000000001), self.position[1] + self.height / 2), (
+            self.position[0] + (self.sliderThickness - self.outlineThickness) // 2 + self.width, self.position[1] + self.height / 2), self.lineThickness - self.outlineThickness)
+        pygame.draw.rect(self.surface, self.rectColor, (
+            self.position[0] + self._value - self.sliderThickness // 2, self.position[1], self.sliderThickness, self.height))
+        rect(self.surface, self.outlineColor, (self.position[0] + self._value - self.sliderThickness //
+                                               2, self.position[1], self.sliderThickness, self.height), self.outlineThickness)
+        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] +
+                                                           self.height / 2), (self.position[0] + self._value + 4, self.position[1] + self.height / 2), 2)
+        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] +
+                                                           self.height / 2 + 4), (self.position[0] + self._value + 4, self.position[1] + self.height / 2 + 4), 2)
+        pygame.draw.line(self.surface, self.outlineColor, (self.position[0] + self._value - 3, self.position[1] +
+                                                           self.height / 2 - 4), (self.position[0] + self._value + 4, self.position[1] + self.height / 2 - 4), 2)
