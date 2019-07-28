@@ -11,26 +11,34 @@ pick = None
 drawing = False
 mouseMotion = False
 
+
 def loadSettings():
     with open('settings.json') as settingsfile:
         return json.load(settingsfile)
+
+
 settings = loadSettings()
 _edition = settings['insider']['edition']
 _width = settings['WindowSize']['width']
 _height = settings['WindowSize']['height']
 _project = "unbenannt"
-class colorpicker(threading.Thread):
+
+
+class QuickAccessBar(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.process = None
+
     def run(self):
-        self.process = subprocess.Popen(['py', 'colorpicker.py'])
-def openpicker():
-    pick = colorpicker()
+        self.process = subprocess.Popen(['py', 'QuickAccessBar.py'])
+
+
+def openQuickAccessBar():
+    pick = QuickAccessBar()
     pick.start()
 
-            
-class main():#threading.Thread):
+
+class main():  # threading.Thread):
     def __init__(self):
         # threading.Thread.__init__(self)
         pygame.init()
@@ -41,6 +49,8 @@ class main():#threading.Thread):
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.screen.fill((255, 255, 255))
         pygame.display.set_caption(f'{_project} - MS Paint {_edition} edition')
+        openQuickAccessBar()
+
     def run(self):
         global drawing
         while True:
@@ -59,15 +69,17 @@ class main():#threading.Thread):
                     drawing = True
                 elif event.type == pygame.MOUSEBUTTONUP:
                     drawing = False
-            
+
             # for x in np.arange(self.paintResolution[0]):
             #     pygame.draw.line(self.screen, (0, 0, 0), (self.width / self.paintResolution[0] * x, 0), (self.width / self.paintResolution[0] * x, self.height), 1)
-            
+
             # for y in np.arange(self.paintResolution[1]):
             #     pygame.draw.line(self.screen, (0, 0, 0), (0, self.height / self.paintResolution[1] * y), (self.width, self.height / self.paintResolution[1] * y), 1)
             if mouseMotion and drawing:
-                pygame.draw.rect(self.screen, (255, 0, 50), (int(self.mousePos[0] / (self.width / self.paintResolution[0])) * self.width / self.paintResolution[0], int(self.mousePos[1] / (self.height / self.paintResolution[1])) * self.height / self.paintResolution[1], 10, 10))
+                pygame.draw.rect(self.screen, (255, 0, 50), (int(self.mousePos[0] / (self.width / self.paintResolution[0])) * self.width / self.paintResolution[0], int(
+                    self.mousePos[1] / (self.height / self.paintResolution[1])) * self.height / self.paintResolution[1], 10, 10))
             pygame.display.flip()
+
 
 if __name__ == "__main__":
     mainprocess = main()
