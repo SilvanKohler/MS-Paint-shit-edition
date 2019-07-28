@@ -4,8 +4,8 @@
         "height": 400
     },
     "colorpickerWindowSize": {
-        "width": 300,
-        "height": 250
+        "width": 100,
+        "height": 150
     },
     "settingsWindowSize": {
         "width": 600,
@@ -14,6 +14,17 @@
     "quickAccessBarWindowSize": {
         "width": "windowSize",
         "height": 15
+    },
+    "toolsWindowSize": {
+        "width": 350,
+        "height": 350
+    },
+    "toolDefaultSettings": {
+        "brush": {
+            "brushStrength": 2,
+            "hardness": 75,
+            "widthModulation": true
+        }
     },
     "dont change": {
         "no dont": "WHY!?!"
