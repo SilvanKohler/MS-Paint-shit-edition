@@ -36,7 +36,7 @@ _width = settings['WindowSize']['width'] if settings['quickAccessBarWindowSize']
 _height = settings['quickAccessBarWindowSize']['height']
 
 window = Tk()
-window.title(f'quick access - MS Paint {_edition} edition')
+window.title(f'Schnellzugriff - MS Paint {_edition} edition')
 window.geometry(f'{_width}x{_height}')
 window.resizable(0,0)
 
