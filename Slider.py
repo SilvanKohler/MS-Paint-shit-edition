@@ -20,7 +20,7 @@ def rect(surface, color, rect, width=0):
     pygame.draw.line(surface, color, (xposition, yposition),
                      (xposition, yposition + heightrect + width // 2), width)
 
-
+currentSlider = None
 class Slider():
     global currentSlider
     currentSlider = 0  # to set the cmyk-values correctly
