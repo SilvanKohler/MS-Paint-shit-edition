@@ -1,2 +1,2 @@
 # MS Paint shit edition
-## It's not yet finished!
+## It's not yet finished
