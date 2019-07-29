@@ -1,3 +1,6 @@
 not synced
 .vscode
 __pycache__
+htmlcov
+.coverage
+coverage.xml
