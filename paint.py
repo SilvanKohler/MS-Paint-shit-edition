@@ -23,6 +23,18 @@ _project = "unbenannt"
 icon = pygame.image.load(f'icons/icon {_iconResolution}px.png')
 
 
+class getOutput(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def run(self):
+        while True:
+            output = str(pick.process.stdout.readline(), 'UTF-8').split()[0] #[process]:[output] 
+            if output.split(':')[0] == 'colorpicker':
+                color = output.split(':')[1].split(',')
+                color = (int(color[0]), int(color[1]), int(color[2]))
+
+
 class QuickAccessBar(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -32,7 +44,14 @@ class QuickAccessBar(threading.Thread):
         self.process = subprocess.Popen(
             ['py', 'QuickAccessBar.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
+
 QAB = None
+
+
+def redrawPainting(surface, painting=np.array([])):#https://camo.githubusercontent.com/94db1e5e2a4eaa28f99e042e946adbd0fee2739c/68747470733a2f2f696d672e736869656c64732e696f2f636f646163792f67726164652f30333361646533333936343934653439396662666363333030623730343462612f6d61737465723f7374796c653d666c61742d737175617265
+    for i in np.arange(painting.shape[0]):
+        for j in np.arange(painting.shape[1]):
+            pygame.draw.rect(surface, (0,0,0), ())
 
 
 def openQuickAccessBar():
