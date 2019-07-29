@@ -149,7 +149,7 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 mousePos = event.pos
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(event)
+                # print(event)
                 if event.button == 1:
                     mouseDown = True
                     mouseClick = True
@@ -169,7 +169,8 @@ def main():
             colorHSV[2] = 100 - mousePos[1] / height * 100
         
         colorRGB = list(hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2]))
-        # print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
+        if 
+        print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
         # print(colorRGB)
         pygame.surfarray.blit_array(screen, colorfield)
         pygame.draw.circle(screen, colorRGB, mousePos, 20)
