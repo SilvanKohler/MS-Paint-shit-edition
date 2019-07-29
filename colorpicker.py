@@ -135,13 +135,16 @@ def main():
         noThreads(0)
     sliderWidth = width - height
     screen = pygame.display.set_mode((width, height))
-    colorRGB = [128, 128, 128]
+    colorRGB = [0, 0, 0]
     colorHSV = list(rgb2hsv(colorRGB[0], colorRGB[1], colorRGB[2]))
 
     mousePos = np.array([0, 0], dtype=np.int)
     mouseDown = False
+    mouseUp = False
+
     while True:
         mouseClick = False
+        mouseUp = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -156,6 +159,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     mouseDown = False
+                    mouseUp = True
 
         if mousePos[0] >= height and mouseDown:
             colorHSV[0] = mousePos[1] / height * 360
@@ -166,11 +170,11 @@ def main():
                 noThreads(colorHSV[0])
         if mousePos[0] < height and mouseDown:
             colorHSV[1] = mousePos[0] / height * 100
-            colorHSV[2] = 100 - mousePos[1] / height * 100
+            colorHSV[2] = 99 - mousePos[1] / height * 100
         
         colorRGB = list(hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2]))
-        if 
-        print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
+        if mouseUp:
+            print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
         # print(colorRGB)
         pygame.surfarray.blit_array(screen, colorfield)
         pygame.draw.circle(screen, colorRGB, mousePos, 20)
