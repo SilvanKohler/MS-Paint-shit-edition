@@ -22,7 +22,7 @@ class colorPicker(threading.Thread):
         self.process = None
 
     def run(self):
-        self.process = subprocess.Popen(['py', 'colorpicker.py'], shell=True, stdin=subprocess.PIPE,
+        self.process = subprocess.Popen(['py', 'colorpicker.py'], shell=False, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         color = getColor()
         color.start
@@ -32,7 +32,7 @@ class toolBox(threading.Thread):
         self.process = None
 
     def run(self):
-        self.process = subprocess.Popen(['py', 'tools.py'], shell=True, stdin=subprocess.PIPE,
+        self.process = subprocess.Popen(['py', 'tools.py'], shell=False, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 
 
