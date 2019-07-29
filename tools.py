@@ -32,7 +32,7 @@ def updateTool(i):
     if tool == "Bleistift":
         print("tool_pencil")
     elif tool == "Pinsel":
-        print(f"tool_brush_settings: {settingsBrush}")
+        print(f"tool_brush_settings:{settingsBrush['brushStrength']},{settingsBrush['hardness']},{settingsBrush['widthModulation']}")
 
 
 def select(evt):
