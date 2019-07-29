@@ -30,7 +30,7 @@ class QuickAccessBar(threading.Thread):
 
     def run(self):
         self.process = subprocess.Popen(
-            ['py', 'QuickAccessBar.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            ['py', 'QuickAccessBar.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 QAB = None
 
