@@ -2,7 +2,6 @@ import pygame
 import numpy as np
 import subprocess
 import threading
-from time import sleep
 import json
 
 pick = None
@@ -21,7 +20,7 @@ _iconResolution = 64 if settings['insider']['allow64pxIcon'] else 32
 _width = settings['WindowSize']['width']
 _height = settings['WindowSize']['height']
 _project = "unbenannt"
-icon = pygame.image.load(f'icon {_iconResolution}px.png')
+icon = pygame.image.load(f'icons/icon {_iconResolution}px.png')
 
 
 class QuickAccessBar(threading.Thread):
@@ -32,7 +31,6 @@ class QuickAccessBar(threading.Thread):
     def run(self):
         self.process = subprocess.Popen(
             ['py', 'QuickAccessBar.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
 
 QAB = None
 
