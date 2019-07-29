@@ -64,14 +64,13 @@ def hsv2rgb(h, s, v):
     return (int(round(r)), int(round(g)), int(round(b)))
 
 
-def noThreads():
+def noThreads(h):
     global colorfield
     pygame.init()
     sliderWidth = width - height
     screen = pygame.display.set_mode((width, height))
     mousePos = np.array([0, 0], dtype=np.int)
     mouseDown = False
-    h = 0
     a = np.arange(height)
     s = np.arange(sliderWidth)
     thread1(a, h)
@@ -112,11 +111,10 @@ def thread2(a, s):
                 colorfield[x, y, i] = rgb[i]
 
 
-def Threads():
+def Threads(h):
     from threading import Thread
     global colorfield
     sliderWidth = width - height
-    h = 0
     a = np.arange(height)
     s = np.arange(sliderWidth)
     Thread1 = Thread(target=thread1, args=(a, h))
@@ -132,9 +130,9 @@ def Threads():
 def main():
     pygame.init()
     if threadsAllowed:
-        Threads()
+        Threads(0)
     else:
-        noThreads()
+        noThreads(0)
     sliderWidth = width - height
     screen = pygame.display.set_mode((width, height))
     colorRGB = [128, 128, 128]
@@ -161,12 +159,17 @@ def main():
 
         if mousePos[0] >= height and mouseDown:
             colorHSV[0] = mousePos[1] / height * 360
+            
+            if threadsAllowed:
+                Threads(colorHSV[0])
+            else:
+                noThreads(colorHSV[0])
         if mousePos[0] < height and mouseDown:
             colorHSV[1] = mousePos[0] / height * 100
             colorHSV[2] = 100 - mousePos[1] / height * 100
         
         colorRGB = list(hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2]))
-        print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
+        # print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
         # print(colorRGB)
         pygame.surfarray.blit_array(screen, colorfield)
         pygame.draw.circle(screen, colorRGB, mousePos, 20)
