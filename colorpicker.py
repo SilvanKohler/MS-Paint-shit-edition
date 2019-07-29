@@ -2,13 +2,17 @@ import pygame
 import numpy as np
 import json
 import Slider
-from timeit import default_timer as timer
-
 
 def loadSettings():
     with open('settings.json') as settingsfile:
         return json.load(settingsfile)
 
+
+settings = loadSettings()
+width = settings['WindowSize']['width']
+height = settings['WindowSize']['height']
+threadsAllowed = settings['insider']['allowThreads']
+colorfield = np.zeros((width, height, 3), dtype=np.int)
 
 def rgb2hsv(r, g, b):
     cmax = max(r, g, b) / 255
@@ -57,17 +61,13 @@ def hsv2rgb(h, s, v):
     return (int(round(r)), int(round(g)), int(round(b)))
 
 
-def main():
+def noThreads():
+    global colorfield
     pygame.init()
-    settings = loadSettings()
-    width = settings['WindowSize']['width']
-    height = settings['WindowSize']['height']
     sliderWidth = width - height
     screen = pygame.display.set_mode((width, height))
-    colorfield = np.zeros((width, height, 3), dtype=np.int)
     mousePos = np.array([0, 0], dtype=np.int)
     mouseDown = False
-    start = timer()
     h = 0
     a = np.arange(height)
     for y in a:
@@ -84,9 +84,6 @@ def main():
                 colorfield[x, y, i] = rgb[i]
 
     colorfield.resize((width, height, 3))
-    pygame.surfarray.blit_array(screen, colorfield)
-    duration = timer() - start
-    print(duration)
     s = Slider.Slider(0, 360, screen)
 
     while True:
@@ -111,9 +108,6 @@ def main():
         pygame.display.flip()
 
 
-if __name__ == "__main__":
-    main()
-
 #
 #   $$\     $$\                                           $$\ $$\                     
 #   $$ |    $$ |                                          $$ |\__|                    
@@ -127,6 +121,81 @@ if __name__ == "__main__":
 #                                                                           \$$$$$$  |
 #                                                                            \______/ 
 #
+
+
+
+
+
+def thread1(a, h):
+    global colorfield
+    for y in a:
+        for x in a:
+            rgb = hsv2rgb(h, y/height*100, (height-x)/height*100)
+            for i in [0, 1, 2]:
+                colorfield[y, x, i] = rgb[i]
+
+
+def thread2(a, s):
+    global colorfield
+    for y in a:
+        rgb = hsv2rgb(y, 100, 100)
+        for x in s + height:
+            for i in [0, 1, 2]:
+                colorfield[x, y, i] = rgb[i]
+
+
+def Threads():
+    from threading import Thread
+    global colorfield
+    pygame.init()
+
+    sliderWidth = width - height
+    screen = pygame.display.set_mode((width, height))
+
+    mousePos = np.array([0, 0], dtype=np.int)
+    mouseDown = False
+    h = 0
+    a = np.arange(height)
+    s = np.arange(sliderWidth)
+    Thread1 = Thread(target=thread1, args=(a, h))
+    Thread2 = Thread(target=thread2, args=(a, s))
+    Thread1.start()
+    Thread2.start()
+    Thread2.join()
+    Thread1.join()
+    colorfield.resize((width, height, 3))
+    pygame.surfarray.blit_array(screen, colorfield)
+
+    s = Slider.Slider(0, 360, screen)
+
+    while True:
+        mouseClick = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            elif event.type == pygame.MOUSEMOTION:
+                mousePos = event.pos
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 0:
+                    mouseDown = True
+                    mouseClick = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 0:
+                    mouseDown = False
+        Slider.Slider.update(mousePos, mouseDown, mouseClick)
+        Slider.Slider.showAll()
+
+        pygame.surfarray.blit_array(screen, colorfield)
+        pygame.display.flip()
+
+
+if threadsAllowed:
+    Threads()
+else:
+    noThreads()
+
+
 # from threading import Thread
 # import pygame
 # import numpy as np
