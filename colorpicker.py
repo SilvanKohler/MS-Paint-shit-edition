@@ -162,7 +162,7 @@ def main():
         if mousePos[0] >= height and mouseDown:
             colorHSV[0] = mousePos[1] / height * 360
         if mousePos[0] < height and mouseDown:
-            colorHSV[1] = 100 - mousePos[0] / height * 100
+            colorHSV[1] = mousePos[0] / height * 100
             colorHSV[2] = 100 - mousePos[1] / height * 100
         
         colorRGB = list(hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2]))
