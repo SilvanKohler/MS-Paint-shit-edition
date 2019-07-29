@@ -8,4 +8,4 @@
 ![GitHub forks](https://img.shields.io/github/forks/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
 ![GitHub watchers](https://img.shields.io/github/watchers/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
-[![Codacy Badge](https://img.shields.io/codacy/grade/033ade3396494e499fbfcc300b7044ba/master?style=flat-square)
+![Codacy Badge](https://img.shields.io/codacy/grade/033ade3396494e499fbfcc300b7044ba/master?style=flat-square)
