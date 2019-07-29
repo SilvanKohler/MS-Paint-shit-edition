@@ -5,11 +5,9 @@ import threading
 from time import sleep
 import json
 
-
-picker = False
 pick = None
-drawing = False
-mouseMotion = False
+mouseButtonDownLeft = False
+mouseMoved = False
 
 
 def loadSettings():
@@ -25,19 +23,24 @@ _height = settings['WindowSize']['height']
 _project = "unbenannt"
 icon = pygame.image.load(f'icon {_iconResolution}px.png')
 
+
 class QuickAccessBar(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.process = None
 
     def run(self):
-        self.process = subprocess.Popen(['py', 'QuickAccessBar.py'])
-        self.process.communicate([])
+        self.process = subprocess.Popen(
+            ['py', 'QuickAccessBar.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+
+QAB = None
 
 
 def openQuickAccessBar():
-    pick = QuickAccessBar()
-    pick.start()
+    global QAB
+    QAB = QuickAccessBar()
+    QAB.start()
 
 
 class main():  # threading.Thread):
@@ -55,30 +58,29 @@ class main():  # threading.Thread):
         openQuickAccessBar()
 
     def run(self):
-        global drawing
+        global mouseButtonDownLeft, QAB
         while True:
-            mouseMotion = False
-            if not picker and pick:
-                pick.process.kill()
+            mouseMoved = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    QAB.process.kill()
                     pygame.quit()
                     return
                 elif event.type == pygame.MOUSEMOTION:
                     self.mousePos = np.array(event.pos)
-                    mouseMotion = True
-                    print(self.mousePos)
+                    mouseMoved = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    drawing = True
+                    print(event.button)
+                    mouseButtonDownLeft = True
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    drawing = False
+                    mouseButtonDownLeft = False
 
             # for x in np.arange(self.paintResolution[0]):
             #     pygame.draw.line(self.screen, (0, 0, 0), (self.width / self.paintResolution[0] * x, 0), (self.width / self.paintResolution[0] * x, self.height), 1)
 
             # for y in np.arange(self.paintResolution[1]):
             #     pygame.draw.line(self.screen, (0, 0, 0), (0, self.height / self.paintResolution[1] * y), (self.width, self.height / self.paintResolution[1] * y), 1)
-            if mouseMotion and drawing:
+            if mouseMoved and mouseButtonDownLeft:
                 pygame.draw.rect(self.screen, (255, 0, 50), (int(self.mousePos[0] / (self.width / self.paintResolution[0])) * self.width / self.paintResolution[0], int(
                     self.mousePos[1] / (self.height / self.paintResolution[1])) * self.height / self.paintResolution[1], 10, 10))
             pygame.display.flip()
