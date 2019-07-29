@@ -163,7 +163,7 @@ def main():
         elif mousePos[0] < height and mouseClick:
             colorHSV[1] = mousePos[0] / height * 100
             colorHSV[2] = mousePos[1] / height * 100
-        colorRGB = hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2])
+        colorRGB = list(hsv2rgb(colorHSV[0], colorHSV[1], colorHSV[2]))
         print(f"{colorRGB[0]},{colorRGB[1]},{colorRGB[2]}")
         # print(colorRGB)
         pygame.surfarray.blit_array(screen, colorfield)
