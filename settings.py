@@ -26,13 +26,13 @@ einstellung = Entry(window)
 def finish():
     global settings
     if selection:
-        if type(settings[selection[0]][selection[1]]) == str:
+        if type(settings[selection[0]][selection[1]]) is str:
             settings[selection[0]][selection[1]] = einstellung.get()
-        elif type(settings[selection[0]][selection[1]]) == int:
+        elif type(settings[selection[0]][selection[1]]) is int:
             settings[selection[0]][selection[1]] = int(einstellung.get())
-        elif type(settings[selection[0]][selection[1]]) == bool:
+        elif type(settings[selection[0]][selection[1]]) is bool:
             settings[selection[0]][selection[1]] = bool(einstellung.get())
-        elif type(settings[selection[0]][selection[1]]) == float:
+        elif type(settings[selection[0]][selection[1]]) is float:
             settings[selection[0]][selection[1]] = float(einstellung.get())
         settings = str(settings).replace("'", '"')
         with open('settings.json', 'w') as settingsfile:
