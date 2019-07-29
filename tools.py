@@ -33,7 +33,6 @@ def updateTool(i):
         print("tool_pencil")
     elif tool == "Pinsel":
         print(f"tool_brush_settings: {settingsBrush}")
-        
 
 
 def select(evt):
