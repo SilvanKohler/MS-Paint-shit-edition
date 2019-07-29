@@ -19,6 +19,10 @@
         "width": 350,
         "height": 350
     },
+    "canvasSize":{
+        "width": 100,
+        "height": 100
+    },
     "toolDefaultSettings": {
         "brush": {
             "brushStrength": 2,
