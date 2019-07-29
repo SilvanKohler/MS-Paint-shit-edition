@@ -7,13 +7,16 @@ import os
 pick = None
 tool = None
 
+
 class getColor(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
     def run(self):
         while True:
-            print('colorpicker:' + pick.process.stdout.readline())
+            output = str(pick.process.stdout.readline(), 'UTF-8').split()[0]
+            if not output == 'pygame' and not output == 'Hello':
+                print('colorpicker:' + output)
 
 
 class colorPicker(threading.Thread):
@@ -26,6 +29,8 @@ class colorPicker(threading.Thread):
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         color = getColor()
         color.start()
+
+
 class toolBox(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -39,6 +44,7 @@ class toolBox(threading.Thread):
 picker_opened = False
 tools_opened = False
 
+
 def Picker():
     global picker_opened, pick
     if not picker_opened:
@@ -48,6 +54,8 @@ def Picker():
     else:
         picker_opened = False
         pick.process.kill()
+
+
 def Tools():
     global tools_opened, tool
     if not tools_opened:
@@ -57,6 +65,7 @@ def Tools():
     else:
         tools_opened = False
         tool.process.kill()
+
 
 def loadSettings():
     with open('settings.json') as settingsfile:
