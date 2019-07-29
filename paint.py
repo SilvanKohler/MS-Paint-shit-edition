@@ -20,7 +20,7 @@ _iconResolution = 64 if settings['insider']['allow64pxIcon'] else 32
 _width = settings['WindowSize']['width']
 _height = settings['WindowSize']['height']
 _project = "unbenannt"
-_canvasResolution = settings['canvasSize'], settings['canvasSize']
+_canvasResolution = settings['canvasSize']['width'], settings['canvasSize']['height']
 icon = pygame.image.load(f'icons/icon {_iconResolution}px.png')
 color = (0,0,0)
 
