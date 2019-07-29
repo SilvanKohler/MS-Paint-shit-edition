@@ -25,7 +25,7 @@ class colorPicker(threading.Thread):
         self.process = subprocess.Popen(['py', 'colorpicker.py'], shell=False, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         color = getColor()
-        color.start
+        color.start()
 class toolBox(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)

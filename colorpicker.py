@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 import json
-import Slider
+# import Slider
 
 
 def loadSettings():
