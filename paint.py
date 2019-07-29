@@ -19,10 +19,11 @@ def loadSettings():
 
 settings = loadSettings()
 _edition = settings['insider']['edition']
+_iconResolution = 64 if settings['insider']['allow64pxIcon'] else 32
 _width = settings['WindowSize']['width']
 _height = settings['WindowSize']['height']
 _project = "unbenannt"
-
+icon = pygame.image.load(f'icon {_iconResolution}px.png')
 
 class QuickAccessBar(threading.Thread):
     def __init__(self):
@@ -31,6 +32,7 @@ class QuickAccessBar(threading.Thread):
 
     def run(self):
         self.process = subprocess.Popen(['py', 'QuickAccessBar.py'])
+        self.process.communicate([])
 
 
 def openQuickAccessBar():
@@ -49,6 +51,7 @@ class main():  # threading.Thread):
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.screen.fill((255, 255, 255))
         pygame.display.set_caption(f'{_project} - MS Paint {_edition} edition')
+        pygame.display.set_icon(icon)
         openQuickAccessBar()
 
     def run(self):
