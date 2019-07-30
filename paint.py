@@ -1,5 +1,4 @@
 import json
-import os
 import subprocess
 import threading
 from ctypes import POINTER, WINFUNCTYPE, windll
