@@ -8,5 +8,4 @@
 ![GitHub followers](https://img.shields.io/github/followers/SilvanKohler.svg?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
-![GitHub watchers](https://img.shields.io/github/watchers/SilvanKohler/MS-Paint-shit-edition.svg?style=flat-square)
-
+<img src="http://img.shields.io/liberapay/receives/SilvanKohler.svg?logo=liberapay">
