@@ -44,11 +44,12 @@ class getOutput(threading.Thread):
                 color = (int(color[0]), int(color[1]), int(color[2]))
             print(output)
 class positionQAB(threading.Thread):
-    def __init__(self, rect):
+    def __init__(self, rect, qab):
         threading.Thread.__init__(self)
         self.rect = rect
+        self.QAB = qab
     def run(self):
-        QAB.process.communicate((self.rect.left, self.rect.top - settings['quickAccessBarWindowSize']['heigth']))
+        self.QAB.process.communicate((self.rect.left, self.rect.top - settings['quickAccessBarWindowSize']['heigth']))
 
 class QuickAccessBar(threading.Thread):
     def __init__(self):
@@ -95,7 +96,7 @@ class main():  # threading.Thread):
         QAB.start()
         GetWindowRect = self.prototype(("GetWindowRect", windll.user32), self.paramflags)
         rect = GetWindowRect(pygame.display.get_wm_info()["window"])
-        positioningQAB = positionQAB(rect)
+        positioningQAB = positionQAB(rect, QAB)
         positioningQAB.start()
     def run(self):
         global mouseButtonDownLeft, QAB, color
